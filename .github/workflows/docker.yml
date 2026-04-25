@@ -1,4 +1,4 @@
-name: Build, Push & Deploy
+name: Build & Push
 
 on:
   push:
@@ -26,12 +26,4 @@ jobs:
         docker build -t ${{ secrets.DOCKER_USERNAME }}/legion:latest .
         docker push ${{ secrets.DOCKER_USERNAME }}/legion:latest
 
-    - name: Set up kubeconfig
-      run: |
-        mkdir -p ~/.kube
-        echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
 
-    - name: Deploy to Kubernetes
-      run: |
-        kubectl set image deployment/legion-deployment \
-        legion=${{ secrets.DOCKER_USERNAME }}/legion:latest
